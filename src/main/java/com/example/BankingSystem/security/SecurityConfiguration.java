@@ -40,9 +40,9 @@ public class SecurityConfiguration {
                 .mvcMatchers(HttpMethod.POST,"/create-checking-account").hasAnyRole("ADMIN")
                 .mvcMatchers(HttpMethod.POST,"/create-savings-account").hasAnyRole("ADMIN")
                 .mvcMatchers(HttpMethod.POST,"/create-credit-card-account").hasAnyRole("ADMIN")
-                .mvcMatchers(HttpMethod.POST,"/set-balance").hasAnyRole("ADMIN")
+                .mvcMatchers(HttpMethod.PATCH,"/set-balance").hasAnyRole("ADMIN")
                 .mvcMatchers(HttpMethod.POST,"/delete-account").hasAnyRole("ADMIN")
-                .mvcMatchers(HttpMethod.POST,"/show-balance").hasAnyRole("ACCOUNTHOLDER")
+                .mvcMatchers(HttpMethod.GET,"/show-balance").hasAnyRole("ACCOUNTHOLDER")
                 .mvcMatchers(HttpMethod.POST,"/wire-transfer").hasAnyRole("ACCOUNTHOLDER")
                 .mvcMatchers(HttpMethod.POST,"/wire-transfer-third-party").hasAnyRole("THIRDPARTY")
 

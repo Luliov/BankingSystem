@@ -1,22 +1,20 @@
 package com.example.BankingSystem.entities.users;
 
 import com.example.BankingSystem.entities.accounts.Account;
+import com.example.BankingSystem.security.User;
 import com.example.BankingSystem.utilities.Address;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-public class AccountHolder {
+public class AccountHolder extends User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String name;
     @Embedded
     private Address primaryAddress;
     private LocalDate dateOfBirth;
     private String mailingAddress;
+    public String password;
     @OneToMany(mappedBy = "primaryOwner", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Account> primaryOwnerList;
     @OneToMany(mappedBy = "secondaryOwner")
@@ -25,27 +23,14 @@ public class AccountHolder {
     public AccountHolder() {
     }
 
-    public AccountHolder(String name, Address primaryAddress, LocalDate dateOfBirth, String mailingAddress) {
-        this.name = name;
+    public AccountHolder(String username, String password, String name, Address primaryAddress, LocalDate dateOfBirth, String mailingAddress, List<Account> primaryOwnerList, List<Account> secondaryOwnerList) {
+        super(username, password, name, "ACCOUNTHOLDER");
         this.primaryAddress = primaryAddress;
         this.dateOfBirth = dateOfBirth;
         this.mailingAddress = mailingAddress;
-    }
-
-   public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        this.password = password;
+        this.primaryOwnerList = primaryOwnerList;
+        this.secondaryOwnerList = secondaryOwnerList;
     }
 
     public Address getPrimaryAddress() {
@@ -88,4 +73,11 @@ public class AccountHolder {
         this.secondaryOwnerList = secondaryOwnerList;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

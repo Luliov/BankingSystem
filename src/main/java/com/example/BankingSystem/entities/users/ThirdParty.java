@@ -1,42 +1,22 @@
 package com.example.BankingSystem.entities.users;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.example.BankingSystem.security.User;
+
+import javax.persistence.*;
 
 @Entity
-public class ThirdParty {
+public class ThirdParty extends User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String name;
     private String hashedKey;
 
-    public ThirdParty(String name, String hashedKey) {
-        this.name = name;
+    public ThirdParty(String username, String password, String name, String hashedKey) {
+        super(username, password, name, "THIRDPARTY");
         this.hashedKey = hashedKey;
     }
 
     public ThirdParty() {
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getHashedKey() {
         return hashedKey;

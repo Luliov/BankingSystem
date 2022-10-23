@@ -35,17 +35,18 @@ public class SecurityConfiguration {
         httpSecurity.httpBasic();
 
         httpSecurity.authorizeRequests()
-                .mvcMatchers(HttpMethod.GET, "/users").hasAnyRole("USER")
-                .mvcMatchers(HttpMethod.GET,"/admin/**").hasRole("ADMIN")
-                .anyRequest().permitAll();
+                .mvcMatchers(HttpMethod.POST,"/create-third-party").hasAnyRole("ADMIN")
+                .mvcMatchers(HttpMethod.POST,"/create-account-holder").hasAnyRole("ADMIN")
+                .mvcMatchers(HttpMethod.POST,"/create-checking-account").hasAnyRole("ADMIN")
+                .mvcMatchers(HttpMethod.POST,"/create-savings-account").hasAnyRole("ADMIN")
+                .mvcMatchers(HttpMethod.POST,"/create-credit-card-account").hasAnyRole("ADMIN")
+                .mvcMatchers(HttpMethod.POST,"/set-balance").hasAnyRole("ADMIN")
+                .mvcMatchers(HttpMethod.POST,"/delete-account").hasAnyRole("ADMIN")
+                .mvcMatchers(HttpMethod.POST,"/show-balance").hasAnyRole("ACCOUNTHOLDER")
+                .mvcMatchers(HttpMethod.POST,"/wire-transfer").hasAnyRole("ACCOUNTHOLDER")
+                .mvcMatchers(HttpMethod.POST,"/wire-transfer-third-party").hasAnyRole("THIRDPARTY")
 
-        //.mvcMatchers(HttpMethod.GET, "/users").hasAnyRole("HOLDER", "ADMIN")
-        // .mvcMatchers(HttpMethod.GET,"/admin/**").hasAnyRole("ADMIN")
-        // .mvcMatchers(HttpMethod.POST,"/holder").hasAnyRole("ADMIN")
-        // poner tipo de lamada a validar (post), ruta crear account holder y que esa ruta solo
-        // la ejecute un admin
-        // .mvcMatchers(HttpMethod.GET,"/modify-password").hasAnyRole("USER","ADMIN")
-        // .mvcMatchers(HttpMethod.PATCH,"/modify-password").hasAnyRole("USER","ADMIN")
+                .anyRequest().permitAll();
 
         httpSecurity.csrf().disable();
 

@@ -1,35 +1,40 @@
 package com.example.BankingSystem.security;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import javax.persistence.*;
-import java.util.List;
+
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
-
-public abstract class User {
+@Inheritance(strategy = InheritanceType.JOINED)
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String username;
     @Column(nullable = false)
     private String password;
 
-    @OneToMany(mappedBy = "user")
-    private List<Role> roles;
+    private String name;
 
-    public User(String username, String password) {
+//    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
+//    @JsonIgnore
+//    private List<Role> roles = new ArrayList<>();
+
+    private String role;
+
+    public User(){}
+
+    public User(String username, String password, String name, String role) {
         this.username = username;
         this.password = password;
-        roles.add(new Role("ADMIN", this));
+        this.name = name;
+        this.role = role;
+        //roles.add(new Role(role_name,this));
     }
-
-    //se crea un rol cuandos e crea el usuario
 }

@@ -27,10 +27,15 @@ public class AdminController implements UserControllerInterface {
 
     @PatchMapping("/set-balance/{accountId}")
     @ResponseStatus(HttpStatus.OK)
-    public Money adminSetBalance(@RequestParam Long accountId, @RequestBody Money amount) {
+    public Money adminSetBalance(@PathVariable Long accountId, @RequestBody Money amount) {
         return userService.adminSetBalance(accountId, amount);
     }
 
+    @DeleteMapping("delete-account/{accountId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteAccount(@RequestParam Long accountId) {
+        userService.deleteAccount(accountId);
+    }
 
 
 

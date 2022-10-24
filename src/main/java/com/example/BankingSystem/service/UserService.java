@@ -23,6 +23,8 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -119,11 +121,31 @@ public class UserService {
         accountRepository.deleteById(accountId);
     }
 
+    public void belowMinimumBalance(){
+        Money money = new Money();
+        List<SavingsAccount> savingsAccounts = savingsAccountRepository.findAll();
+        List<CheckingAccount> checkingAccounts = checkingAccountRepository.findAll();
+        for(SavingsAccount savingsAccount: savingsAccounts){
+
+            if(savingsAccount.getBalance().getAmount().compareTo(savingsAccount.getMinimumBalance().getAmount()) == -1){
+                Money newBalance = new Money(savingsAccount.getBalance().decreaseAmount(savingsAccount.getPenaltyFee()));
+                savingsAccount.setBalance(newBalance);
+                accountRepository.save(savingsAccount);
+            }
+        }
+
+        for(CheckingAccount checkingAccount: checkingAccounts){
+
+            if(checkingAccount.getBalance().getAmount().compareTo(checkingAccount.getMinimumBalance().getAmount()) == -1){
+                Money newBalance = new Money(checkingAccount.getBalance().decreaseAmount(checkingAccount.getPenaltyFee()));
+                checkingAccount.setBalance(newBalance);
+                accountRepository.save(checkingAccount);
+            }
+        }
+    }
+
 }
 
-//    public Money belowMinimumBalance(Money minimumBalance, BigDecimal penaltyFee){
-//        If any account drops below minimumBalance, penaltyFee should be deducted from the balance automatically
-//        return null;}
 
 //    public BigDecimal interestRateCreditCard(CreditCardAccount creditCardAccount){//
 //    Interest on credit cards is added to the balance monthly. If you have a 12% interest rate (0.12)
@@ -136,13 +158,7 @@ public class UserService {
 //     BigDecimal interestRate = new BigDecimal(accountDTO.getInterestRate());
 //     Money amount = new Money(new BigDecimal(accountDTO.getBalance()));
 //     Money totalAmount = amount;
-//     int time = SavingsAccount.getCreationDate() - (LocalDate.now());
-//     int years = savingsAccount.getCreationDate().getYear() - (LocalDate.now().getYear());
-//     BigDecimal yearlyInterest;
-//     for (int i = 0; i == 12; i++ ){
-//        yearlyInterest = totalAmount * interestRate;
-//        totalAmount += yearlyInterest;
-//      }
+//     SavingsAccount.getCreationDate() - (LocalDate.now());
 //   Interest on savings accounts is added to the account annually at the rate of specified interestRate per year. That means
 //   that if I have 1000000 in a savings account with a 0.01 //   interest rate, 1% of 1 Million is added to my account after 1 year.
 //   When a savings account balance is accessed, you must determine if it has been 1 year or more since either the
